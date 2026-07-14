@@ -4,6 +4,15 @@
   // The extension ships its own server, so no classic `typescript.tsdk` is needed.
   "js/ts.experimental.useTsgo": true,
 
+  // Format on save with oxfmt (via the oxc extension) — enforces 2-space indent
+  // and layout. Lint rules (semi, single-quote, curly) still squiggle in the editor.
   "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "file",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
+  "[typescript]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
+  "[javascript]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
+  "[json]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
+  "[jsonc]": { "editor.defaultFormatter": "oxc.oxc-vscode" },
+
   "files.eol": "\n"
 }

@@ -62,7 +62,11 @@
       "Bash(node_modules/.bin/oxlint --config .oxlintrc.json src/_probe.ts)",
       "Bash(yarn lint:fix)",
       "Bash(node_modules/.bin/oxlint --config .oxlintrc.json --fix /tmp/probe.ts)",
-      "Bash(node_modules/.bin/oxlint --config .oxlintrc.json --fix /tmp/probe2.ts)"
+      "Bash(node_modules/.bin/oxlint --config .oxlintrc.json --fix /tmp/probe2.ts)",
+      "Bash(yarn format *)",
+      "Bash(yarn format:check)",
+      "WebFetch(domain:marketplace.visualstudio.com)",
+      "Bash(grep -n \"\\\\.oxlintrc.json\\\\|tsconfig.json$\\\\|package.json$\" README.md)"
     ]
   }
 }

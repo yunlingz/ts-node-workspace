@@ -2,11 +2,8 @@
   "name": "ts-node-workspace",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "description": "Deno/Bun-like TypeScript template running on native Node.js type stripping.",
-  "engines": {
-    "node": ">=22.18"
-  },
+  "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "start": "node src/index.ts",
@@ -17,18 +14,24 @@
     "ts:co:watch": "node scripts/co.ts --watch",
     "typecheck": "tsgo --noEmit",
     "lint": "oxlint --type-aware",
-    "lint:fix": "oxlint --type-aware --fix"
-  },
-  "devDependencies": {
-    "@types/lodash": "^4.17.24",
-    "@types/node": "^22.0.0",
-    "@typescript/native-preview": "^7.0.0-dev.20260707.2",
-    "oxlint": "^1.74.0",
-    "oxlint-tsgolint": "^0.24.0"
+    "lint:fix": "oxlint --type-aware --fix",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
   },
   "dependencies": {
     "chalk": "4",
     "lodash": "^4.18.1",
     "nanoid": "5"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.17.24",
+    "@types/node": "^22.0.0",
+    "@typescript/native-preview": "^7.0.0-dev.20260707.2",
+    "oxfmt": "^0.59.0",
+    "oxlint": "^1.74.0",
+    "oxlint-tsgolint": "^0.24.0"
+  },
+  "engines": {
+    "node": ">=22.18"
   }
 }

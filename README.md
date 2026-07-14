@@ -36,7 +36,7 @@ The built-in **`curly`** rule (`["error", "all"]`) requires braces on every cont
 statement — `if (…) { … }`, never `if (…) stmt;` (also `for`/`while`/`else`). It has an
 autofix, so `yarn lint:fix` adds the braces for you.
 
-oxlint omits *formatting* rules by design, so two more are added as a tiny local JS
+oxlint omits _formatting_ rules by design, so two more are added as a tiny local JS
 plugin (`scripts/oxlint-style-plugin.js`, wired via `jsPlugins` in `.oxlintrc.json`):
 
 - **`style/single-quote`** — strings must use single quotes (double quotes allowed only
@@ -46,6 +46,30 @@ plugin (`scripts/oxlint-style-plugin.js`, wired via `jsPlugins` in `.oxlintrc.js
 
 Both are report-only (no autofix) and use oxlint's ESLint-compatible plugin API, which is
 currently **alpha** — the rules are intentionally small and dependency-free.
+
+## Formatting with `oxfmt`
+
+Linters flag issues; **formatters** fix layout. Indentation is a formatting concern, so it's
+handled by [`oxfmt`](https://oxc.rs) (the oxc formatter, ~30× faster than Prettier),
+configured in `.oxfmtrc.json` (2-space indent, semicolons, single quotes).
+
+```bash
+yarn format         # oxfmt — reformat in place
+yarn format:check   # oxfmt --check — verify formatting (CI)
+```
+
+In VS Code, `.vscode/settings.json` sets oxfmt as the default formatter with
+`formatOnSave`, so 2-space indent + layout are applied automatically on save.
+
+**Linter vs. formatter — why both:**
+
+- The **linter** (oxlint) makes rules _visible_ — `style/semi`, `style/single-quote`, and
+  `curly` show as red squiggles in the editor and fail `yarn lint`.
+- The **formatter** (oxfmt) makes layout _automatic_ — indentation and spacing are fixed on
+  save. oxlint has no indent rule (by design), so indentation lives here.
+
+Their overlapping settings (semicolons, single quotes) are configured to agree, so
+formatting never produces lint errors.
 
 ## Fast type checking with `tsgo` (TypeScript native / Go)
 
@@ -90,8 +114,9 @@ pre-commit or quick local gate.
 `ts:co:watch` re-runs your file, then re-type-checks and re-lints on every change. The
 launcher owns the watch loop, so output is deterministic: it runs the program first, then
 prints the verdicts **last** (`✔ type check passed` / `✔ lint passed`, or the diagnostics
-+ `✖ … failed`), so any error is always the final thing on screen — never buried under
-program output. Runs until you Ctrl-C:
+
+- `✖ … failed`), so any error is always the final thing on screen — never buried under
+  program output. Runs until you Ctrl-C:
 
 ```bash
 yarn ts:co:watch src/server.ts [args...]
@@ -112,14 +137,15 @@ yarn add -D @types/lodash        # types for packages that ship none
 ```
 
 ```ts
-import { nanoid } from "nanoid";   // pure-ESM package
-import _ from "lodash";            // CommonJS → default import is module.exports
-import chalk from "chalk";         // CommonJS named exports are auto-detected
+import { nanoid } from 'nanoid'; // pure-ESM package
+import _ from 'lodash'; // CommonJS → default import is module.exports
+import chalk from 'chalk'; // CommonJS named exports are auto-detected
 
-console.log(nanoid(), _.capitalize("hi"), chalk.green("ok"));
+console.log(nanoid(), _.capitalize('hi'), chalk.green('ok'));
 ```
 
 Notes:
+
 - **CommonJS default import**: `import _ from "lodash"` gives you `module.exports`
   (enabled by `esModuleInterop`). Named imports from a CJS package work when Node can
   statically detect the export names; if one can't be detected, fall back to the default
@@ -134,7 +160,7 @@ JavaScript. There is **no type checking at runtime** — that's what `yarn typec
 
 ### Constraints (enforced by `erasableSyntaxOnly` in tsconfig)
 
-Node can only strip *erasable* syntax. These are **not** supported and `tsgo` will flag them:
+Node can only strip _erasable_ syntax. These are **not** supported and `tsgo` will flag them:
 
 - `enum`
 - Parameter properties (`constructor(private x: number)`)
@@ -146,7 +172,7 @@ Use a plain object + `as const`, or a type union, instead of `enum`.
 ### Relative imports need the `.ts` extension
 
 ```ts
-import { greet } from "./greet.ts"; // ✅ required by Node at runtime
+import { greet } from './greet.ts'; // ✅ required by Node at runtime
 ```
 
 ## Layout
@@ -163,6 +189,7 @@ scripts/
   settings.json  # tsgo IntelliSense
   extensions.json
 .oxlintrc.json   # oxlint config
+.oxfmtrc.json    # oxfmt (formatter) config
 tsconfig.json
 package.json
 ```

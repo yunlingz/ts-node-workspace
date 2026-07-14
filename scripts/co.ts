@@ -40,8 +40,7 @@ function localBin(pkg: string, unixBin: string, winBin: string): string {
   return manifest.replace(/package\.json$/, suffix);
 }
 
-const tsgoBin = () =>
-  localBin('@typescript/native-preview', 'bin/tsgo', 'bin\\tsgo.exe');
+const tsgoBin = () => localBin('@typescript/native-preview', 'bin/tsgo', 'bin\\tsgo.exe');
 const oxlintBin = () => localBin('oxlint', 'bin/oxlint', 'bin\\oxlint.exe');
 
 function spawnInherit(command: string, args: string[]): ChildProcess {
@@ -65,8 +64,12 @@ if (!watch) {
     exitCode(spawnInherit(tsgoBin(), ['--noEmit'])),
     exitCode(spawnInherit(oxlintBin(), ['--type-aware'])),
   ]);
-  if (typecheckCode !== 0) {console.error('\n✖ type check failed');}
-  if (lintCode !== 0) {console.error('✖ lint failed');}
+  if (typecheckCode !== 0) {
+    console.error('\n✖ type check failed');
+  }
+  if (lintCode !== 0) {
+    console.error('✖ lint failed');
+  }
   process.exit(programCode || typecheckCode || lintCode);
 }
 
@@ -85,8 +88,12 @@ let queued = false;
 function check(label: string, bin: string, args: string[]): string {
   const r = spawnSync(bin, args, { encoding: 'utf8' });
   const out = `${r.stdout ?? ''}${r.stderr ?? ''}`.trim();
-  if (r.status === 0) {return `${GREEN}✔ ${label} passed${RESET}`;}
-  if (out) {console.log(out);}
+  if (r.status === 0) {
+    return `${GREEN}✔ ${label} passed${RESET}`;
+  }
+  if (out) {
+    console.log(out);
+  }
   return `${RED}✖ ${label} failed${RESET}`;
 }
 
@@ -99,7 +106,9 @@ async function cycle() {
   running = true;
 
   // 1. (Re)start the program.
-  if (program) {program.kill('SIGTERM');}
+  if (program) {
+    program.kill('SIGTERM');
+  }
   console.log(`${DIM}— running ${entry} —${RESET}`);
   program = spawnInherit(process.execPath, [entry, ...rest]);
   await exitCode(program);
@@ -124,15 +133,23 @@ async function cycle() {
 let timer: ReturnType<typeof setTimeout> | null = null;
 const watcher = fsWatch(process.cwd(), { recursive: true }, (_e, file) => {
   const f = file ?? '';
-  if (f.includes('node_modules') || f.startsWith('.git')) {return;}
-  if (!/\.(ts|tsx|mts|cts|json)$/.test(f)) {return;}
-  if (timer) {clearTimeout(timer);}
+  if (f.includes('node_modules') || f.startsWith('.git')) {
+    return;
+  }
+  if (!/\.(ts|tsx|mts|cts|json)$/.test(f)) {
+    return;
+  }
+  if (timer) {
+    clearTimeout(timer);
+  }
   timer = setTimeout(() => void cycle(), 100);
 });
 
 function shutdown() {
   watcher.close();
-  if (program) {program.kill('SIGTERM');}
+  if (program) {
+    program.kill('SIGTERM');
+  }
   process.exit(0);
 }
 process.on('SIGINT', shutdown);
