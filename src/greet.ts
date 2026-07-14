@@ -4,5 +4,5 @@ export interface GreetOptions {
 }
 
 export function greet({ name, excited = false }: GreetOptions): string {
-  return `Hello, ${name}${excited ? "!" : "."}`;
+  return `Hello, ${name}${excited ? '!' : '.'}`;
 }

@@ -30,6 +30,19 @@ as `yarn typecheck`. Config is in `.oxlintrc.json` (correctness + suspicious as 
 noisy stylistic rules disabled). VS Code shows lint diagnostics inline via the recommended
 **oxc** extension (`.vscode/extensions.json`).
 
+### Enforced style rules
+
+oxlint omits stylistic formatting rules by design, so two are added as a tiny local JS
+plugin (`scripts/oxlint-style-plugin.js`, wired via `jsPlugins` in `.oxlintrc.json`):
+
+- **`style/single-quote`** — strings must use single quotes (double quotes allowed only
+  when the string itself contains a `'`, to avoid escaping).
+- **`style/semi`** — statements must end with a semicolon (block-bodied declarations like
+  functions/classes/interfaces are correctly exempt).
+
+Both are report-only (no autofix) and use oxlint's ESLint-compatible plugin API, which is
+currently **alpha** — the rules are intentionally small and dependency-free.
+
 ## Fast type checking with `tsgo` (TypeScript native / Go)
 
 Type checking uses [`tsgo`](https://github.com/microsoft/typescript-go)
@@ -141,6 +154,7 @@ src/
   deps-demo.ts   # example: importing ESM + CommonJS npm packages
 scripts/
   co.ts          # run + type-check + lint launcher (ts:co / ts:co:watch)
+  oxlint-style-plugin.js  # custom oxlint rules: single-quote + semi
 .vscode/
   settings.json  # tsgo IntelliSense
   extensions.json

@@ -1,4 +1,4 @@
-import { greet } from "./greet.ts";
+import { greet } from './greet.ts';
 
-const name = process.argv[2] ?? "world";
+const name = process.argv[2] ?? 'world';
 console.log(greet({ name }));

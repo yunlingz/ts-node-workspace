@@ -56,7 +56,9 @@
       "Bash(yarn ts:co src/_bad.ts)",
       "Read(//tmp/**)",
       "Bash(grep -n \"type-check in parallel\\\\|full-project\\\\|type diagnostics as soon\\\\|type-check result\\\\|tsconfig.json$\\\\|package.json$\" README.md)",
-      "Bash(node -e \"console.log\\(Object.keys\\(require\\('./package.json'\\).scripts\\).join\\(', '\\)\\)\")"
+      "Bash(node -e \"console.log\\(Object.keys\\(require\\('./package.json'\\).scripts\\).join\\(', '\\)\\)\")",
+      "Bash(node_modules/.bin/oxlint --version)",
+      "Bash(node_modules/.bin/oxlint --config .oxlintrc.json /tmp/semi-probe.ts)"
     ]
   }
 }

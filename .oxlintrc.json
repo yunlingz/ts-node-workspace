@@ -1,6 +1,7 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "unicorn", "oxc", "import"],
+  "jsPlugins": ["./scripts/oxlint-style-plugin.js"],
   "categories": {
     "correctness": "error",
     "suspicious": "error",
@@ -17,7 +18,9 @@
     "no-ternary": "off",
     "id-length": "off",
     "unicorn/no-null": "off",
-    "unicorn/prefer-string-raw": "off"
+    "unicorn/prefer-string-raw": "off",
+    "style/single-quote": "error",
+    "style/semi": "error"
   },
   "ignorePatterns": ["node_modules", "dist"]
 }
