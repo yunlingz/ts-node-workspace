@@ -19,7 +19,10 @@
       "Bash(yarn start *)",
       "Bash(yarn typecheck *)",
       "Bash(yarn run *)",
-      "Bash(yarn ts *)"
+      "Bash(yarn ts *)",
+      "Bash(yarn ts:co src/index.ts Alice)",
+      "Bash(echo \"exit=$?\")",
+      "Bash(yarn ts:co src/index.ts)"
     ]
   }
 }

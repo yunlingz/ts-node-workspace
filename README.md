@@ -31,6 +31,29 @@ yarn ts src/index.ts Alice         # forward args to the script
 yarn ts:watch src/server.ts        # node --watch <file> — auto-reload
 ```
 
+## Run + type-check in parallel
+
+Node strips types without checking them. `ts:co` runs your file **and** a full-project
+`tsc --noEmit` concurrently (via `scripts/co.ts`, zero deps), so you get program output
+immediately and type diagnostics as soon as the check finishes:
+
+```bash
+yarn ts:co src/server.ts [args...]
+```
+
+Exit code is non-zero if **either** the program or the type check fails — handy for a
+pre-commit or quick local gate. Wall-clock ≈ the slower of the two, not the sum.
+
+### Watch mode
+
+`ts:co:watch` keeps both running: `node --watch` re-runs your file and
+`tsc --noEmit --watch` re-checks the project on every change. Runs until you Ctrl-C
+(both children are stopped together):
+
+```bash
+yarn ts:co:watch src/server.ts [args...]
+```
+
 ## How it works
 
 Node strips TypeScript types at runtime (via the Amaro loader) and runs the resulting
