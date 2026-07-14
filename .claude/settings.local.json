@@ -25,7 +25,9 @@
       "Bash(yarn ts:co src/index.ts)",
       "Bash(node -p \"require\\('./node_modules/@types/node/package.json'\\).version\")",
       "Bash(node -p \"require\\('typescript/package.json'\\).version\")",
-      "Bash(node -p \"JSON.stringify\\(require\\('./node_modules/typescript/package.json'\\).version\\)\")"
+      "Bash(node -p \"JSON.stringify\\(require\\('./node_modules/typescript/package.json'\\).version\\)\")",
+      "Bash(yarn add *)",
+      "Bash(cd *)"
     ]
   }
 }

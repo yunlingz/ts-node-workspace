@@ -54,6 +54,32 @@ pre-commit or quick local gate. Wall-clock ≈ the slower of the two, not the su
 yarn ts:co:watch src/server.ts [args...]
 ```
 
+## Third-party npm packages
+
+Install with Yarn and `import` them as ESM — this project is `"type": "module"`,
+and Node's module system handles **both** ESM and CommonJS packages:
+
+```bash
+yarn add nanoid lodash chalk
+yarn add -D @types/lodash        # types for packages that ship none
+```
+
+```ts
+import { nanoid } from "nanoid";   // pure-ESM package
+import _ from "lodash";            // CommonJS → default import is module.exports
+import chalk from "chalk";         // CommonJS named exports are auto-detected
+
+console.log(nanoid(), _.capitalize("hi"), chalk.green("ok"));
+```
+
+Notes:
+- **CommonJS default import**: `import _ from "lodash"` gives you `module.exports`
+  (enabled by `esModuleInterop`). Named imports from a CJS package work when Node can
+  statically detect the export names; if one can't be detected, fall back to the default
+  import and destructure: `import pkg from "cjs-only"; const { thing } = pkg;`.
+- **Types**: many packages bundle their own; for those that don't, add `@types/<pkg>`.
+- No bundler or build step is involved — Node resolves `node_modules` directly.
+
 ## How it works
 
 Node strips TypeScript types at runtime (via the Amaro loader) and runs the resulting
@@ -80,8 +106,11 @@ import { greet } from "./greet.ts"; // ✅ required by Node at runtime
 
 ```
 src/
-  index.ts   # entry point (yarn start)
-  greet.ts   # sample module (erasable syntax only)
+  index.ts       # entry point (yarn start)
+  greet.ts       # sample module (erasable syntax only)
+  deps-demo.ts   # example: importing ESM + CommonJS npm packages
+scripts/
+  co.ts          # run + type-check launcher (ts:co / ts:co:watch)
 tsconfig.json
 package.json
 ```
