@@ -1,0 +1,9 @@
+{
+  // Use the native Go TypeScript language server (tsgo) for IntelliSense.
+  // Requires the "TypeScript (Native Preview)" extension — see extensions.json.
+  // The extension ships its own server, so no classic `typescript.tsdk` is needed.
+  "js/ts.experimental.useTsgo": true,
+
+  "editor.formatOnSave": true,
+  "files.eol": "\n"
+}

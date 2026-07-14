@@ -15,12 +15,16 @@
     "ts:watch": "node --watch",
     "ts:co": "node scripts/co.ts",
     "ts:co:watch": "node scripts/co.ts --watch",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsgo --noEmit",
+    "lint": "oxlint --type-aware",
+    "lint:fix": "oxlint --type-aware --fix"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.24",
     "@types/node": "^22.0.0",
-    "typescript": "^5.8.0"
+    "@typescript/native-preview": "^7.0.0-dev.20260707.2",
+    "oxlint": "^1.74.0",
+    "oxlint-tsgolint": "^0.24.0"
   },
   "dependencies": {
     "chalk": "4",

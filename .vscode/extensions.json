@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    // Native Go TypeScript language server (tsgo) — faster IntelliSense.
+    // Enabled via "js/ts.experimental.useTsgo" in settings.json.
+    "TypeScriptTeam.native-preview",
+    // oxlint — fast Rust linter, shows diagnostics inline in the editor.
+    "oxc.oxc-vscode"
+  ]
+}

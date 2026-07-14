@@ -7,10 +7,10 @@
     "lib": ["esnext"],
 
     // Load Node's global type definitions (process, console, Buffer, ...).
-    // Explicit so editors/tsc don't rely on @types auto-discovery timing.
+    // Explicit so editors/tsgo don't rely on @types auto-discovery timing.
     "types": ["node"],
 
-    // We never emit — Node runs the .ts directly, tsc is only a checker.
+    // We never emit — Node runs the .ts directly, tsgo is only a checker.
     "noEmit": true,
 
     // Only allow syntax Node can strip (errors on enum, param props, runtime namespaces).

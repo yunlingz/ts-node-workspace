@@ -11,14 +11,38 @@ no `tsx`, `ts-node`, or build step. Managed with **Yarn Classic**.
 ## Usage
 
 ```bash
-yarn install        # installs typescript (the only devDependency)
+yarn install        # installs @typescript/native-preview (tsgo) + type defs
 
 yarn start          # node src/index.ts
 yarn start Alice    # pass args: prints "Hello, Alice."
 
 yarn dev            # node --watch — auto-reloads on file changes
-yarn typecheck      # tsc --noEmit — Node does NOT type-check, so do it here / in CI
+yarn typecheck      # tsgo --noEmit — Node does NOT type-check, so do it here / in CI
+yarn lint           # oxlint --type-aware — fast Rust linter
+yarn lint:fix       # oxlint --type-aware --fix — auto-fix what it can
 ```
+
+## Fast linting with `oxlint`
+
+Linting uses [`oxlint`](https://oxc.rs) (Rust, 50–100× faster than ESLint). It runs
+`--type-aware`, which uses **tsgo** for rules that need type information — the same engine
+as `yarn typecheck`. Config is in `.oxlintrc.json` (correctness + suspicious as errors;
+noisy stylistic rules disabled). VS Code shows lint diagnostics inline via the recommended
+**oxc** extension (`.vscode/extensions.json`).
+
+## Fast type checking with `tsgo` (TypeScript native / Go)
+
+Type checking uses [`tsgo`](https://github.com/microsoft/typescript-go)
+(`@typescript/native-preview`), the native Go port of the TypeScript compiler — several
+times faster than the classic `tsc` (≈0.1s here). `yarn typecheck`, `yarn ts:co`, and
+`yarn ts:co:watch` all use it. The classic `typescript`/`tsc` package is **not installed**.
+
+VS Code IntelliSense uses tsgo as well via `.vscode/settings.json`
+(`"js/ts.experimental.useTsgo": true`) — install the recommended
+**TypeScript (Native Preview)** extension when prompted (`.vscode/extensions.json`).
+
+> `tsgo` is a preview and not yet at full feature parity with `tsc`. If you hit a tsgo
+> bug you can temporarily `yarn add -D typescript` and run `npx tsc --noEmit` to compare.
 
 ## Run any file (Deno/Bun-style)
 
@@ -31,28 +55,34 @@ yarn ts src/index.ts Alice         # forward args to the script
 yarn ts:watch src/server.ts        # node --watch <file> — auto-reload
 ```
 
-## Run + type-check in parallel
+## Run + type-check + lint in parallel
 
 Node strips types without checking them. `ts:co` runs your file **and** a full-project
-`tsc --noEmit` concurrently (via `scripts/co.ts`, zero deps), so you get program output
-immediately and type diagnostics as soon as the check finishes:
+`tsgo --noEmit` type check **and** `oxlint` concurrently (via `scripts/co.ts`, zero deps),
+so you get program output immediately and check results as soon as they finish:
 
 ```bash
 yarn ts:co src/server.ts [args...]
 ```
 
-Exit code is non-zero if **either** the program or the type check fails — handy for a
-pre-commit or quick local gate. Wall-clock ≈ the slower of the two, not the sum.
+Exit code is non-zero if the program, the type check, **or** the lint fails — handy for a
+pre-commit or quick local gate.
 
 ### Watch mode
 
-`ts:co:watch` keeps both running: `node --watch` re-runs your file and
-`tsc --noEmit --watch` re-checks the project on every change. Runs until you Ctrl-C
-(both children are stopped together):
+`ts:co:watch` re-runs your file, then re-type-checks and re-lints on every change. The
+launcher owns the watch loop, so output is deterministic: it runs the program first, then
+prints the verdicts **last** (`✔ type check passed` / `✔ lint passed`, or the diagnostics
++ `✖ … failed`), so any error is always the final thing on screen — never buried under
+program output. Runs until you Ctrl-C:
 
 ```bash
 yarn ts:co:watch src/server.ts [args...]
 ```
+
+> Note: type errors are not runtime errors — Node strips types and runs the code anyway,
+> so the program still executes. The type-check verdict below the output tells you whether
+> the types are sound.
 
 ## Third-party npm packages
 
@@ -87,7 +117,7 @@ JavaScript. There is **no type checking at runtime** — that's what `yarn typec
 
 ### Constraints (enforced by `erasableSyntaxOnly` in tsconfig)
 
-Node can only strip *erasable* syntax. These are **not** supported and `tsc` will flag them:
+Node can only strip *erasable* syntax. These are **not** supported and `tsgo` will flag them:
 
 - `enum`
 - Parameter properties (`constructor(private x: number)`)
@@ -110,7 +140,11 @@ src/
   greet.ts       # sample module (erasable syntax only)
   deps-demo.ts   # example: importing ESM + CommonJS npm packages
 scripts/
-  co.ts          # run + type-check launcher (ts:co / ts:co:watch)
+  co.ts          # run + type-check + lint launcher (ts:co / ts:co:watch)
+.vscode/
+  settings.json  # tsgo IntelliSense
+  extensions.json
+.oxlintrc.json   # oxlint config
 tsconfig.json
 package.json
 ```

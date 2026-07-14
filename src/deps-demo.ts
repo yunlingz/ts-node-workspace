@@ -16,3 +16,4 @@ console.log("nanoid (esm pkg):", nanoid(8));
 console.log("lodash (cjs default):", _.capitalize("hello world"));
 console.log("lodash chunk:", _.chunk([1, 2, 3, 4, 5], 2));
 console.log(chalk.green("chalk (cjs) works too"));
+
