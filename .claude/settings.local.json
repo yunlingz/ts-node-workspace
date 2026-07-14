@@ -58,7 +58,11 @@
       "Bash(grep -n \"type-check in parallel\\\\|full-project\\\\|type diagnostics as soon\\\\|type-check result\\\\|tsconfig.json$\\\\|package.json$\" README.md)",
       "Bash(node -e \"console.log\\(Object.keys\\(require\\('./package.json'\\).scripts\\).join\\(', '\\)\\)\")",
       "Bash(node_modules/.bin/oxlint --version)",
-      "Bash(node_modules/.bin/oxlint --config .oxlintrc.json /tmp/semi-probe.ts)"
+      "Bash(node_modules/.bin/oxlint --config .oxlintrc.json /tmp/semi-probe.ts)",
+      "Bash(node_modules/.bin/oxlint --config .oxlintrc.json src/_probe.ts)",
+      "Bash(yarn lint:fix)",
+      "Bash(node_modules/.bin/oxlint --config .oxlintrc.json --fix /tmp/probe.ts)",
+      "Bash(node_modules/.bin/oxlint --config .oxlintrc.json --fix /tmp/probe2.ts)"
     ]
   }
 }

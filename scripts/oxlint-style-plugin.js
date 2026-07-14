@@ -33,12 +33,12 @@ const singleQuote = {
   create(context) {
     return {
       Literal(node) {
-        if (typeof node.value !== 'string') return;
+        if (typeof node.value !== 'string') {return;}
         const raw = node.raw;
-        if (!raw || raw[0] !== '"') return;
+        if (!raw || raw[0] !== '"') {return;}
         // Allow double quotes when the string contains a single quote, to avoid
         // forcing escapes (same spirit as ESLint's `avoidEscape`).
-        if (node.value.includes("'")) return;
+        if (node.value.includes("'")) {return;}
         context.report({ message: 'Prefer single-quoted strings.', node });
       },
     };
@@ -52,7 +52,7 @@ const semi = {
     const text = sc?.text ?? sc?.getText?.();
 
     function check(node) {
-      if (!text) return; // no source access → skip rather than false-positive
+      if (!text) {return;} // no source access → skip rather than false-positive
       // A `VariableDeclaration` used as a for-loop head or inside an export is
       // covered elsewhere (the loop / export node), so skip it here.
       const parentType = node.parent?.type;
@@ -69,19 +69,19 @@ const semi = {
       const end = node.range ? node.range[1] : node.end;
       // Walk back over trailing whitespace within the node's own range.
       let i = end - 1;
-      while (i >= 0 && /\s/.test(text[i])) i--;
+      while (i >= 0 && /\s/.test(text[i])) {i--;}
       if (text[i] !== ';') {
         context.report({ message: 'Missing semicolon.', node });
       }
     }
 
     const visitor = {};
-    for (const type of SEMI_NODES) visitor[type] = check;
+    for (const type of SEMI_NODES) {visitor[type] = check;}
 
     // Exports: `export function/class/interface … {}` take no semicolon, but
     // `export const x = 1` and `export { a }` / `export default expr` do.
     function checkExport(node) {
-      if (node.declaration && BLOCK_BODIED.has(node.declaration.type)) return;
+      if (node.declaration && BLOCK_BODIED.has(node.declaration.type)) {return;}
       check(node);
     }
     visitor.ExportNamedDeclaration = checkExport;

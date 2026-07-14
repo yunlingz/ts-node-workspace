@@ -19,6 +19,7 @@
     "id-length": "off",
     "unicorn/no-null": "off",
     "unicorn/prefer-string-raw": "off",
+    "curly": ["error", "all"],
     "style/single-quote": "error",
     "style/semi": "error"
   },

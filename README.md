@@ -32,7 +32,11 @@ noisy stylistic rules disabled). VS Code shows lint diagnostics inline via the r
 
 ### Enforced style rules
 
-oxlint omits stylistic formatting rules by design, so two are added as a tiny local JS
+The built-in **`curly`** rule (`["error", "all"]`) requires braces on every control
+statement — `if (…) { … }`, never `if (…) stmt;` (also `for`/`while`/`else`). It has an
+autofix, so `yarn lint:fix` adds the braces for you.
+
+oxlint omits *formatting* rules by design, so two more are added as a tiny local JS
 plugin (`scripts/oxlint-style-plugin.js`, wired via `jsPlugins` in `.oxlintrc.json`):
 
 - **`style/single-quote`** — strings must use single quotes (double quotes allowed only
