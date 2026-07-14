@@ -6,6 +6,10 @@
     "target": "esnext",
     "lib": ["esnext"],
 
+    // Load Node's global type definitions (process, console, Buffer, ...).
+    // Explicit so editors/tsc don't rely on @types auto-discovery timing.
+    "types": ["node"],
+
     // We never emit — Node runs the .ts directly, tsc is only a checker.
     "noEmit": true,
 
