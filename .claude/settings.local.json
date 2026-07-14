@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.github.com)",
+      "Bash(command -v npm)",
+      "Bash(npm --version)",
+      "Bash(npm ls *)",
+      "Bash(npm root *)",
+      "Bash(npm config *)",
+      "Bash(npm cache *)",
+      "Bash(yarn cache *)",
+      "Read(//home/yunlingzhu/**)",
+      "Read(//home/yunlingzhu/.nvm/versions/node/v24.18.0/lib/node_modules/yarn/bin/**)",
+      "Bash(~/.nvm/versions/node/v24.18.0/bin/yarn --version)",
+      "Bash(cp ~/.zshrc ~/.zshrc.bak-bun)",
+      "Bash(rm -rf ~/.bun)",
+      "Bash(command -v bun bunx)",
+      "Bash(yarn install *)",
+      "Bash(yarn start *)",
+      "Bash(yarn typecheck *)",
+      "Bash(yarn run *)",
+      "Bash(yarn ts *)"
+    ]
+  }
+}

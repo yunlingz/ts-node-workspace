@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    // --- Match Node's native type-stripping runtime ---
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "target": "esnext",
+    "lib": ["esnext"],
+
+    // We never emit — Node runs the .ts directly, tsc is only a checker.
+    "noEmit": true,
+
+    // Only allow syntax Node can strip (errors on enum, param props, runtime namespaces).
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+
+    // Node requires the .ts extension on relative imports at runtime.
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+
+    // --- Strictness ---
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true,
+    "skipLibCheck": true,
+
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*.ts"]
+}

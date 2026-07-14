@@ -1,0 +1,22 @@
+{
+  "name": "ts-node-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Deno/Bun-like TypeScript template running on native Node.js type stripping.",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "node src/index.ts",
+    "dev": "node --watch src/index.ts",
+    "ts": "node",
+    "ts:watch": "node --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.8.0"
+  }
+}
